@@ -661,6 +661,41 @@ CPointsMap::TInsertionOptions::TInsertionOptions()
 {
 }
 
+CLoadableOptions::Options CPointsMap::TInsertionOptions::dataForVisualize()
+	const
+{
+	Options opts;
+	opts.push_back(
+		SReflectionOpts(
+			SReflectionOpts::DoubleSpinBox, "minDistBetweenLaserPoints", 0.02,
+			0.0, 10.0, 0.01));
+
+	opts.push_back(
+		SReflectionOpts(
+			SReflectionOpts::RadioButton, "addToExistingPointsMap", 0.0));
+	opts.push_back(
+		SReflectionOpts(SReflectionOpts::RadioButton, "also_interpolate", 0.0));
+	opts.push_back(
+		SReflectionOpts(SReflectionOpts::RadioButton, "disableDeletion", 1.0));
+	opts.push_back(
+		SReflectionOpts(SReflectionOpts::RadioButton, "fuseWithExisting", 0.0));
+	opts.push_back(
+		SReflectionOpts(SReflectionOpts::RadioButton, "isPlanarMap", 0.0));
+	opts.push_back(
+		SReflectionOpts(
+			SReflectionOpts::DoubleSpinBox, "horizontalTolerance", 0.0, -10.0,
+			10.0, 0.01));
+	opts.push_back(
+		SReflectionOpts(
+			SReflectionOpts::DoubleSpinBox, "maxDistForInterpolatePoints", 2.0,
+			0.0, 10.0, 0.01));
+	opts.push_back(
+		SReflectionOpts(
+			SReflectionOpts::RadioButton, "insertInvalidPoints", 0.0));
+
+	return opts;
+}
+
 // Binary dump to/read from stream - for usage in derived classes' serialization
 void CPointsMap::TInsertionOptions::writeToStream(
 	mrpt::utils::CStream& out) const
@@ -696,6 +731,25 @@ void CPointsMap::TInsertionOptions::readFromStream(mrpt::utils::CStream& in)
 CPointsMap::TLikelihoodOptions::TLikelihoodOptions()
 	: sigma_dist(0.0025), max_corr_distance(1.0), decimation(10)
 {
+}
+
+CLoadableOptions::Options CPointsMap::TLikelihoodOptions::dataForVisualize()
+	const
+{
+	Options opts;
+	opts.push_back(
+		SReflectionOpts(
+			SReflectionOpts::DoubleSpinBox, "sigma_dist", 0.25, -10.0, 10.0,
+			0.01));
+	opts.push_back(
+		SReflectionOpts(
+			SReflectionOpts::DoubleSpinBox, "max_corr_distance", 1.0, 0.0, 10.0,
+			0.01));
+	opts.push_back(
+		SReflectionOpts(
+			SReflectionOpts::SpinBox, "decimation", 10.0, 0.0, 100.0));
+
+	return opts;
 }
 
 void CPointsMap::TLikelihoodOptions::writeToStream(

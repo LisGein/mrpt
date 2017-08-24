@@ -28,7 +28,6 @@ class CPointsConfig : public CBaseConfig
 	virtual void updateConfiguration(
 		mrpt::maps::TMetricMapInitializer* options) override;
 	virtual TypeOfConfig type() const override;
-
 	void setInsertOpt(
 		const mrpt::maps::CSimplePointsMap::TInsertionOptions& insertOpt =
 			mrpt::maps::CSimplePointsMap::TInsertionOptions());

@@ -27,6 +27,21 @@ TMapGenericParams::TMapGenericParams()
 {
 }
 
+CLoadableOptions::Options TMapGenericParams::dataForVisualize() const
+{
+	Options opts;
+	opts.push_back(
+		SReflectionOpts(
+			SReflectionOpts::RadioButton, "enableSaveAs3DObject", 1.0));
+	opts.push_back(
+		SReflectionOpts(
+			SReflectionOpts::RadioButton, "enableObservationLikelihood", 1.0));
+	opts.push_back(
+		SReflectionOpts(
+			SReflectionOpts::RadioButton, "enableObservationInsertion", 1.0));
+	return opts;
+}
+
 void TMapGenericParams::loadFromConfigFile(
 	const mrpt::utils::CConfigFileBase& source, const std::string& sct)
 {

@@ -10,6 +10,7 @@
 #define CLoadableOptions_H
 
 #include <mrpt/utils/core_defs.h>
+#include <vector>
 #include <string>
 #include <stdexcept>
 
@@ -40,6 +41,45 @@ class BASE_IMPEXP CLoadableOptions
 		CStream& out, const char* varName, const std::string& v);
 
    public:
+	struct SReflectionOpts
+	{
+		enum Type
+		{
+			None = -1,
+			RadioButton = 0,
+			SpinBox = 1,
+			DoubleSpinBox = 2,
+			Combobox = 3
+		};
+		Type type;
+		std::string name;
+		std::vector<std::string> data;
+		double min;
+		double max;
+		double defaultValue;
+		double step;
+		int decimals;
+
+		SReflectionOpts(
+			Type _type, std::string _name, double _defaultValue = 0.0,
+			double _min = -1.0, double _max = 1.0, double _step = 1.0,
+			int _decimals = 2,
+			const std::vector<std::string>& _data = std::vector<std::string>())
+			: type(_type),
+			  name(_name),
+			  data(_data),
+			  min(_min),
+			  max(_max),
+			  defaultValue(_defaultValue),
+			  step(_step),
+			  decimals(_decimals)
+		{
+		}
+	};
+
+	typedef std::vector<SReflectionOpts> Options;
+
+	virtual Options dataForVisualize() const { return Options(); }
 	/** This method load the options from a ".ini"-like file or memory-stored
 	 * string list.
 	 *   Only those parameters found in the given "section" and having

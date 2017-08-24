@@ -16,8 +16,14 @@ CPointsConfig::CPointsConfig()
 {
 	m_ui->setupUi(this);
 
-	setInsertOpt();
-	setLikelihoodOpt();
+	auto* mapDefination = new mrpt::maps::CSimplePointsMap::TMapDefinition();
+
+	generateLayoutForWidget(
+		mapDefination->genericMapParams.dataForVisualize(), m_ui->generic);
+	generateLayoutForWidget(
+		mapDefination->insertionOpts.dataForVisualize(), m_ui->insert);
+	generateLayoutForWidget(
+		mapDefination->likelihoodOpts.dataForVisualize(), m_ui->likelihood);
 }
 
 CPointsConfig::~CPointsConfig() {}
@@ -34,52 +40,50 @@ void CPointsConfig::updateConfiguration(
 	assert(mapDefination);
 
 	mapDefination->genericMapParams.enableSaveAs3DObject =
-		m_ui->enableSaveAs3DObject;
+		getData<bool>("enableSaveAs3DObject");
 	mapDefination->genericMapParams.enableObservationLikelihood =
-		m_ui->enableObservationLikelihood;
+		getData<bool>("enableObservationLikelihood");
 	mapDefination->genericMapParams.enableObservationInsertion =
-		m_ui->enableObservationInsertion;
-
+		getData<bool>("enableObservationInsertion");
 	mapDefination->insertionOpts.minDistBetweenLaserPoints =
-		m_ui->minDistBetweenLaserPoints->value();
+		CBaseConfig::getData<double>(QString("minDistBetweenLaserPoints"));
 	mapDefination->insertionOpts.addToExistingPointsMap =
-		m_ui->addToExistingPointsMap->isChecked();
+		getData<bool>("addToExistingPointsMap");
 	mapDefination->insertionOpts.also_interpolate =
-		m_ui->also_interpolate->isChecked();
+		getData<bool>("also_interpolate");
 	mapDefination->insertionOpts.disableDeletion =
-		m_ui->disableDeletion->isChecked();
+		getData<bool>("disableDeletion");
 	mapDefination->insertionOpts.fuseWithExisting =
-		m_ui->fuseWithExisting->isChecked();
-	mapDefination->insertionOpts.isPlanarMap = m_ui->isPlanarMap->isChecked();
+		getData<bool>("fuseWithExisting");
+	mapDefination->insertionOpts.isPlanarMap = getData<bool>("isPlanarMap");
 	mapDefination->insertionOpts.horizontalTolerance =
-		m_ui->horizontalTolerance->value();
+		getData<double>("horizontalTolerance");
 	mapDefination->insertionOpts.maxDistForInterpolatePoints =
-		m_ui->maxDistForInterpolatePoints->value();
+		getData<double>("maxDistForInterpolatePoints");
 	mapDefination->insertionOpts.insertInvalidPoints =
-		m_ui->insertInvalidPoints->isChecked();
+		getData<bool>("insertInvalidPoints");
 }
 
 TypeOfConfig CPointsConfig::type() const { return TypeOfConfig::PointsMap; }
 void CPointsConfig::setInsertOpt(
 	const mrpt::maps::CPointsMap::TInsertionOptions& insertOpt)
 {
-	m_ui->minDistBetweenLaserPoints->setValue(
-		insertOpt.minDistBetweenLaserPoints);
-	m_ui->addToExistingPointsMap->setChecked(insertOpt.addToExistingPointsMap);
-	m_ui->also_interpolate->setChecked(insertOpt.also_interpolate);
-	m_ui->disableDeletion->setChecked(insertOpt.disableDeletion);
-	m_ui->fuseWithExisting->setChecked(insertOpt.fuseWithExisting);
-	m_ui->isPlanarMap->setChecked(insertOpt.isPlanarMap);
-	m_ui->horizontalTolerance->setValue(insertOpt.horizontalTolerance);
-	m_ui->maxDistForInterpolatePoints->setValue(
-		insertOpt.maxDistForInterpolatePoints);
-	m_ui->insertInvalidPoints->setChecked(insertOpt.insertInvalidPoints);
+	setData("minDistBetweenLaserPoints", insertOpt.minDistBetweenLaserPoints);
+	setData("addToExistingPointsMap", insertOpt.addToExistingPointsMap);
+	setData("also_interpolate", insertOpt.also_interpolate);
+	setData("disableDeletion", insertOpt.disableDeletion);
+	setData("fuseWithExisting", insertOpt.fuseWithExisting);
+	setData("isPlanarMap", insertOpt.isPlanarMap);
+	setData("horizontalTolerance", insertOpt.horizontalTolerance);
+	setData(
+		"maxDistForInterpolatePoints", insertOpt.maxDistForInterpolatePoints);
+	setData("insertInvalidPoints", insertOpt.insertInvalidPoints);
 }
 
 void CPointsConfig::setLikelihoodOpt(
 	const mrpt::maps::CPointsMap::TLikelihoodOptions& likelihoodOpt)
 {
-	m_ui->sigma_dist->setValue(likelihoodOpt.sigma_dist);
-	m_ui->max_corr_distance->setValue(likelihoodOpt.max_corr_distance);
-	m_ui->decimation->setValue(likelihoodOpt.decimation);
+	setData("sigma_dist", likelihoodOpt.sigma_dist);
+	setData("max_corr_distance", likelihoodOpt.max_corr_distance);
+	setData("decimation", likelihoodOpt.decimation);
 }

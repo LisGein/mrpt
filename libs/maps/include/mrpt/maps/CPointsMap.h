@@ -206,6 +206,9 @@ class MAPS_IMPEXP CPointsMap : public CMetricMap,
 	{
 		/** Initilization of default parameters */
 		TInsertionOptions();
+
+		virtual Options dataForVisualize() const override;
+
 		void loadFromConfigFile(
 			const mrpt::utils::CConfigFileBase& source,
 			const std::string& section) override;  // See base docs
@@ -266,6 +269,8 @@ class MAPS_IMPEXP CPointsMap : public CMetricMap,
 		 */
 		TLikelihoodOptions();
 		virtual ~TLikelihoodOptions() {}
+		virtual Options dataForVisualize() const override;
+
 		void loadFromConfigFile(
 			const mrpt::utils::CConfigFileBase& source,
 			const std::string& section) override;  // See base docs

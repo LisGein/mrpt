@@ -100,6 +100,9 @@ class OBS_IMPEXP TMapGenericParams : public mrpt::utils::CLoadableOptions,
 	bool enableObservationInsertion;
 
 	TMapGenericParams();
+
+	virtual Options dataForVisualize() const override;
+
 	void loadFromConfigFile(
 		const mrpt::utils::CConfigFileBase& source,
 		const std::string& sectionNamePrefix) override;  // See base docs
