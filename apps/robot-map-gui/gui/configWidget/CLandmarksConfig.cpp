@@ -15,7 +15,7 @@ using namespace mrpt;
 using namespace maps;
 using namespace vision;
 
-CLandmarksConfig::CLandmarksConfig()
+CLandmarksConfig::CLandmarksConfig(CLandmarksMap::TMapDefinition* mapDefination)
 	: CBaseConfig(), m_ui(std::make_unique<Ui::CLandmarksConfig>())
 {
 	m_ui->setupUi(this);
@@ -38,9 +38,6 @@ CLandmarksConfig::CLandmarksConfig()
 		"VedaldiBinary", CFeatureExtraction::VedaldiBinary);
 	m_ui->implementation->addItem("Hess", CFeatureExtraction::Hess);
 	m_ui->implementation->addItem("OpenCV", CFeatureExtraction::OpenCV);
-
-	setInsertOpt();
-	setLikelihoodOpt();
 }
 
 const QString CLandmarksConfig::getName()
@@ -218,7 +215,7 @@ void CLandmarksConfig::updateConfiguration(
 		.rho_scale = m_ui->rho_scale->value();
 }
 
-TypeOfConfig CLandmarksConfig::type() const { return TypeOfConfig::Landmarks; }
+TypeOfConfig CLandmarksConfig::type() const { return TypeOfConfig::Landmarks; }/*
 void CLandmarksConfig::setInsertOpt(
 	const CLandmarksMap::TInsertionOptions& insertOpt)
 {
@@ -367,4 +364,4 @@ void CLandmarksConfig::setLikelihoodOpt(
 		likelihoodOpt.SIFT_feat_options.LogPolarImagesOptions.num_angles);
 	m_ui->rho_scale->setValue(
 		likelihoodOpt.SIFT_feat_options.LogPolarImagesOptions.rho_scale);
-}
+}*/

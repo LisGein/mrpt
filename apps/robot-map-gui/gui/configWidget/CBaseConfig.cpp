@@ -8,11 +8,19 @@
    +---------------------------------------------------------------------------+
    */
 #include "CBaseConfig.h"
+#include "CControlsFactoryVisitor.h"
+
 
 CBaseConfig::CBaseConfig() : QWidget() {}
+
+void CBaseConfig::addFunction(const std::function<void ()> &f)
+{
+	m_functions.push_back(f);
+}
+
 using namespace mrpt::utils;
 void CBaseConfig::generateLayoutForWidget(
-	const CLoadableOptions::Options& opts, QWidget* parent)
+	const CLoadableOptions& opts, QWidget* parent)
 {
 	bool setLay = false;
 	auto layout = dynamic_cast<QVBoxLayout*>(parent->layout());
@@ -21,57 +29,74 @@ void CBaseConfig::generateLayoutForWidget(
 		setLay = true;
 		layout = new QVBoxLayout();
 	}
-	for (auto& param : opts)
+
+	for (auto& nameAndProperty : opts.getProperties())
 	{
-		QString name = QString::fromStdString(param.name);
+
+		const auto& name = nameAndProperty.first;
+		QString optName = QString::fromStdString(name);
+		const auto& someProperty = nameAndProperty.second;
+
+		ControlsFactoryVisitor visitor(this);
+		mapbox::util::apply_visitor(visitor, someProperty);
+
 		auto lay = new QHBoxLayout();
-		switch (param.type)
+		auto* control =  visitor.get();
+		lay->addWidget(control);/*
+
+
+		mapbox::util::apply_visitor();
+		const auto& optName = nameAndProperty.first;
+		const CLoadableOptions::AnyProperty& someProperty = nameAndProperty.second;
+		QString name = QString::fromStdString(optName);
+		auto lay = new QHBoxLayout();
+		switch (someProperty.type)
 		{
-			case CLoadableOptions::SReflectionOpts::RadioButton:
+			case CLoadableOptions::TypeOfOptions::RadioButton:
 			{
 				auto button = new QRadioButton(parent);
 				button->setAutoExclusive(false);
-				button->setChecked(param.defaultValue);
+				button->setChecked(someProperty.value);
 				m_widgets.emplace(name, button);
 				lay->addWidget(button);
 				break;
 			}
-			case CLoadableOptions::SReflectionOpts::SpinBox:
+			case CLoadableOptions::TypeOfOptions::SpinBox:
 			{
 				auto spinBox = new QSpinBox(parent);
-				spinBox->setRange(param.min, param.max);
-				spinBox->setSingleStep(param.step);
-				spinBox->setValue(param.defaultValue);
+				spinBox->setRange(someProperty.min, someProperty.max);
+				spinBox->setSingleStep(someProperty.step);
+				spinBox->setValue(someProperty.value);
 				m_widgets.emplace(name, spinBox);
 				lay->addWidget(spinBox);
 				break;
 			}
-			case CLoadableOptions::SReflectionOpts::DoubleSpinBox:
+			case CLoadableOptions::TypeOfOptions::DoubleSpinBox:
 			{
 				auto spinBox = new QDoubleSpinBox(parent);
-				spinBox->setRange(param.min, param.max);
-				spinBox->setSingleStep(param.step);
-				spinBox->setValue(param.defaultValue);
+				spinBox->setRange(someProperty.min, someProperty.max);
+				spinBox->setSingleStep(someProperty.step);
+				spinBox->setValue(someProperty.value);
 				m_widgets.emplace(name, spinBox);
 				lay->addWidget(spinBox);
 				break;
 			}
-			case CLoadableOptions::SReflectionOpts::Combobox:
+			case CLoadableOptions::TypeOfOptions::Combobox:
 			{
 				auto combobox = new QComboBox(parent);
 				int i = 0;
-				for (auto& item : param.data)
+				for (auto& item : someProperty.data)
 					combobox->insertItem(i++, QString::fromStdString(item));
-				combobox->setCurrentIndex(param.defaultValue);
+				combobox->setCurrentIndex(someProperty.value);
 				m_widgets.emplace(name, combobox);
 				lay->addWidget(combobox);
 				break;
 			}
 			default:
 				break;
-		}
+		}*/
 
-		auto label = new QLabel(name);
+		auto label = new QLabel(optName);
 		lay->addWidget(label);
 		lay->addStretch();
 
@@ -79,4 +104,20 @@ void CBaseConfig::generateLayoutForWidget(
 	}
 	layout->addStretch();
 	if (setLay) parent->setLayout(layout);
+}
+
+void CBaseConfig::setData(const CLoadableOptions &opts)
+{
+
+}
+
+void CBaseConfig::getData(const CLoadableOptions &opts)
+{
+
+}
+
+void CBaseConfig::updateData()
+{
+	for (const auto& function : m_functions)
+		function();
 }

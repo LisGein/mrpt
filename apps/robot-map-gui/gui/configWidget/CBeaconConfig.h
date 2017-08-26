@@ -22,20 +22,13 @@ class CBeaconConfig;
 class CBeaconConfig : public CBaseConfig
 {
    public:
-	CBeaconConfig();
+	CBeaconConfig(mrpt::maps::CBeaconMap::TMapDefinition* mapDefination = new mrpt::maps::CBeaconMap::TMapDefinition());
 	virtual ~CBeaconConfig() = default;
 
 	virtual void updateConfiguration(
 		mrpt::maps::TMetricMapInitializer* options) override;
 	virtual const QString getName() override;
 	virtual TypeOfConfig type() const override;
-
-	void setInsertOpt(
-		const mrpt::maps::CBeaconMap::TInsertionOptions& insertOpt =
-			mrpt::maps::CBeaconMap::TInsertionOptions());
-	void setLikelihoodOpt(
-		const mrpt::maps::CBeaconMap::TLikelihoodOptions& likelihoodOpt =
-			mrpt::maps::CBeaconMap::TLikelihoodOptions());
 
    private:
 	std::unique_ptr<Ui::CBeaconConfig> m_ui;

@@ -214,7 +214,7 @@ TSetOfMetricMapInitializers CConfigWidget::config()
 			TMetricMapInitializer* mi = mmr.factoryMapDefinition(sMapName);
 			ASSERT_(mi);
 
-			map->updateConfiguration(mi);
+			map->updateData();
 			mapCfg.push_back(TMetricMapInitializer::Ptr(mi));
 			++index;
 		}
@@ -235,10 +235,9 @@ void CConfigWidget::setConfig(const CMultiMetricMap::TListMaps& config)
 				std::dynamic_pointer_cast<CSimplePointsMap>(iter->get_ptr());
 			if (ptr.get())
 			{
-				CPointsConfig* pConfig = new CPointsConfig();
+				CPointsConfig* pConfig = new CPointsConfig(
+							dynamic_cast<CSimplePointsMap::TMapDefinition*>(ptr->MapDefinition()));
 				addWidget(TypeOfConfig::PointsMap, pConfig);
-				pConfig->setInsertOpt(ptr->insertionOptions);
-				pConfig->setLikelihoodOpt(ptr->likelihoodOptions);
 				found = true;
 			}
 		}
@@ -248,13 +247,9 @@ void CConfigWidget::setConfig(const CMultiMetricMap::TListMaps& config)
 				std::dynamic_pointer_cast<COccupancyGridMap2D>(iter->get_ptr());
 			if (ptr.get())
 			{
-				COccupancyConfig* pConfig = new COccupancyConfig();
+				COccupancyConfig* pConfig = new COccupancyConfig(
+							dynamic_cast<COccupancyGridMap2D::TMapDefinition*>(ptr->MapDefinition()));
 				addWidget(TypeOfConfig::Occupancy, pConfig);
-				pConfig->setCreationOpt(
-					ptr->getXMin(), ptr->getXMax(), ptr->getYMin(),
-					ptr->getYMax(), ptr->getResolution());
-				pConfig->setInsertOpt(ptr->insertionOptions);
-				pConfig->setLikelihoodOpt(ptr->likelihoodOptions);
 				found = true;
 			}
 		}
@@ -265,13 +260,12 @@ void CConfigWidget::setConfig(const CMultiMetricMap::TListMaps& config)
 					iter->get_ptr());
 			if (ptr.get())
 			{
-				CGasGridConfig* pConfig = new CGasGridConfig();
+				CGasGridConfig* pConfig = new CGasGridConfig(
+							dynamic_cast<CGasConcentrationGridMap2D::TMapDefinition*>(ptr->MapDefinition()));
 				addWidget(TypeOfConfig::GasGrid, pConfig);
 				pConfig->setCreationOpt(
 					ptr->getXMin(), ptr->getXMax(), ptr->getYMin(),
 					ptr->getYMax(), ptr->getResolution());
-				pConfig->setInsertOpt(ptr->insertionOptions);
-				// pConfig->setMapTypeOpt(ptr->mapType);
 				found = true;
 			}
 		}
@@ -281,10 +275,9 @@ void CConfigWidget::setConfig(const CMultiMetricMap::TListMaps& config)
 				std::dynamic_pointer_cast<CBeaconMap>(iter->get_ptr());
 			if (ptr.get())
 			{
-				CBeaconConfig* pConfig = new CBeaconConfig();
+				CBeaconConfig* pConfig = new CBeaconConfig(
+							dynamic_cast<CBeaconMap::TMapDefinition*>(ptr->MapDefinition()));
 				addWidget(TypeOfConfig::Beacon, pConfig);
-				pConfig->setInsertOpt(ptr->insertionOptions);
-				pConfig->setLikelihoodOpt(ptr->likelihoodOptions);
 				found = true;
 			}
 		}
@@ -294,10 +287,9 @@ void CConfigWidget::setConfig(const CMultiMetricMap::TListMaps& config)
 				std::dynamic_pointer_cast<CLandmarksMap>(iter->get_ptr());
 			if (ptr.get())
 			{
-				CLandmarksConfig* pConfig = new CLandmarksConfig();
+				CLandmarksConfig* pConfig = new CLandmarksConfig(
+							dynamic_cast<CLandmarksMap::TMapDefinition*>(ptr->MapDefinition()));
 				addWidget(TypeOfConfig::Landmarks, pConfig);
-				pConfig->setInsertOpt(ptr->insertionOptions);
-				pConfig->setLikelihoodOpt(ptr->likelihoodOptions);
 				found = true;
 			}
 		}

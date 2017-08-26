@@ -28,7 +28,7 @@ class CFileOutputStream;
 class COccupancyConfig : public CBaseConfig
 {
    public:
-	COccupancyConfig();
+	COccupancyConfig(mrpt::maps::COccupancyGridMap2D::TMapDefinition *def = new mrpt::maps::COccupancyGridMap2D::TMapDefinition());
 	virtual ~COccupancyConfig() = default;
 
 	virtual const QString getName() override;
@@ -38,13 +38,6 @@ class COccupancyConfig : public CBaseConfig
 
 	void setCreationOpt(
 		float min_x, float max_x, float min_y, float max_y, float resolution);
-	void setInsertOpt(
-		const mrpt::maps::COccupancyGridMap2D::TInsertionOptions& insertOpt =
-			mrpt::maps::COccupancyGridMap2D::TInsertionOptions());
-	void setLikelihoodOpt(
-		const mrpt::maps::COccupancyGridMap2D::TLikelihoodOptions&
-			likelihoodOpt =
-				mrpt::maps::COccupancyGridMap2D::TLikelihoodOptions());
 
    private:
 	std::unique_ptr<Ui::COccupancyConfig> m_ui;

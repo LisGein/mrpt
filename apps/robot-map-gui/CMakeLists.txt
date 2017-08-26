@@ -44,6 +44,7 @@ if(CMAKE_MRPT_HAS_Qt5 AND CMAKE_MRPT_HAS_OPENGL_GLUT)
 		gui/configWidget/CGasGridConfig.cpp
 		gui/configWidget/CLandmarksConfig.cpp
 		gui/configWidget/CGeneralConfig.cpp
+		gui/configWidget/CControlsFactoryVisitor.cpp
 		TypeOfConfig.h
 		)
 

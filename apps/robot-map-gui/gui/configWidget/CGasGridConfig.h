@@ -21,7 +21,7 @@ class CGasGridConfig;
 class CGasGridConfig : public CBaseConfig
 {
    public:
-	CGasGridConfig();
+	CGasGridConfig(mrpt::maps::CGasConcentrationGridMap2D::TMapDefinition *def = new mrpt::maps::CGasConcentrationGridMap2D::TMapDefinition());
 	virtual ~CGasGridConfig() = default;
 
 	virtual const QString getName() override;
@@ -31,12 +31,6 @@ class CGasGridConfig : public CBaseConfig
 
 	void setCreationOpt(
 		float min_x, float max_x, float min_y, float max_y, float resolution);
-	void setInsertOpt(
-		const mrpt::maps::CGasConcentrationGridMap2D::TInsertionOptions&
-			insertOpt =
-				mrpt::maps::CGasConcentrationGridMap2D::TInsertionOptions());
-	void setMapTypeOpt(
-		const mrpt::maps::CGasConcentrationGridMap2D::TMapRepresentation&);
 
    private:
 	std::unique_ptr<Ui::CGasGridConfig> m_ui;
